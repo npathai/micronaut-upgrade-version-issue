@@ -1,0 +1,85 @@
+self:
+  url: '${SELF_HOST:`http://localhost:8080`}'
+  path: '${SELF_PATH:`/`}'
+
+micronaut:
+  application:
+    name: test
+  server:
+    port: 8080
+    cors:
+      enabled: true
+      configurations:
+        all:
+          allowedMethods:
+            - 'GET'
+            - 'POST'
+            - 'PUT'
+            - 'PATCH'
+            - 'DELETE'
+            - 'OPTIONS'
+          allowedHeaders:
+            - 'Authorization'
+            - 'connection'
+            - 'content-type'
+            - 'content-length'
+            - 'date'
+            - 'keep-alive'
+            - 'UserId'
+            - 'x-local-cache'
+      single-header: true
+  security:
+    token:
+      jwt:
+        enabled: true
+        bearer:
+          enabled: true
+        cookie:
+          enabled: false
+      roles-name: groups
+      name-key: oid
+  http:
+    read-timeout: 30s
+
+db:
+  default:
+    url: "jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+    username: "sa"
+    password: ""
+
+datasources:
+  default:
+    url: "jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        physical_naming_strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+        jdbc:
+          time_zone: 'UTC'
+        hbm2ddl:
+          auto: none
+        show_sql: true
+        SQL: 'debug'
+        type: 'trace'
+
+endpoints:
+  health:
+    enabled: true
+    details-visible: never
+    jdbc:
+      enabled: true
+  liquibase:
+    enabled: true
+    sensitive: false
+
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false
+  serialization-inclusion: always
